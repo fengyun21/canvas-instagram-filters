@@ -2,10 +2,10 @@
 
 Read the article here:
 
-https://www.viget.com/admin/entries/article/9726-instagram-style-filters-in-html5-canvas
+https://www.viget.com/article/9726-instagram-style-filters-in-html5-canvas
 
-It's possible that you will need to run a local web server to view
-this demo. Start one up with:
+To run this project locally, it's possible that you will need to run a
+local web server. Start one up with:
 
 ```
 make start
