@@ -44,7 +44,7 @@ We need to set up a basic environment before we can begin. We'll load
 an image, then render the scene once it has finished loading:
 
 ```html
-<canvas id="canvas" width="500" height="500"></canvas>
+<canvas id="canvas"></canvas>
 
 <script>
   var photo    = new Image();
