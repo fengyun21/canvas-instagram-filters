@@ -4,15 +4,17 @@
 image filters. A well-chosen filter can augment the best parts of a
 photo, or soften undesirable qualities.
 
-On a recent project I was charged with implementing image filters for
-a JavaScript application that leans on HTML5 canvas. And so I began
-the beautiful rabbit hole that are photographic filters.
+On a recent project I was charged with implementing similar image filters
+for a JavaScript application that leans on HTML5 canvas.
+
+So began my journey down the beautiful rabbit hole that is pixel
+manipulation.
 
 ## Prior Art
 
-Late last year [Una Kravets showed us how to implement Instagram
-filters with CSS](https://github.com/una/CSSgram). The project is an
-excellent example of how powerful CSS has become.
+Late last year
+[Una Kravets gave us Instagram filters in CSS](https://github.com/una/CSSgram). The
+project is an excellent example of how powerful CSS has become.
 
 In brief, modern CSS allows one to apply a blending mode directly to a
 CSS element:
