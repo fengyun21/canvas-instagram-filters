@@ -444,15 +444,15 @@ library EaselJS has already solved this problem for us</a>. Color
 matrices provide a way to manipulate the brightness, color, contrast,
 and saturation of an image.</p>
 <h2 id="using-color-matrices">Using Color Matrices</h2>
-<p>For the sake of keeping focused, I’ve extracted the color matrix
-algorithm from EaselJS for the purposes of this blog post, I won’t
-make you wade through matrix multiplication. However feel free to
-checkout
+<p>I’ve extracted the color matrix algorithm from EaselJS for the
+purposes of this blog post, I won’t make you wade through matrix
+multiplication. However feel free to checkout
 <a href="https://gist.github.com/nhunzaker/79c599d367b168819c11">the source code</a>
-if you are curious</p>
-<p>After we pull in a color matrix transformation library, manipulating brightness and contrast is a matter of sending
-parameters into a color matrix:</p>
-<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"color-matrix.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+if you are curious.</p>
+<p>After we pull in a color matrix transformation library, manipulating
+brightness and contrast is a matter of sending the right parameters:</p>
+<pre><code class="lang-html"><span class="hljs-comment">&lt;!-- https://github.com/vigetlabs/canvas-instagram-filters/blob/gh-pages/lib/color-matrix.js --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"lib/color-matrix.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
   <span class="hljs-comment">//... prior code</span>
@@ -466,7 +466,7 @@ parameters into a color matrix:</p>
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
 <p>The specific brightness and contrast parameters are different, however
-the effect is virtually the same. Beautiful:</p>
+the result is virtually the same. Beautiful:</p>
 <iframe src="http://codepen.io/nhunzaker/full/oxxaXO/" width="100%"
 height="390" frameborder="0"></iframe>
 

@@ -217,18 +217,18 @@ and saturation of an image.
 
 ## Using Color Matrices
 
-For the sake of keeping focused, I've extracted the color matrix
-algorithm from EaselJS for the purposes of this blog post, I won't
-make you wade through matrix multiplication. However feel free to
-checkout
+I've extracted the color matrix algorithm from EaselJS for the
+purposes of this blog post, I won't make you wade through matrix
+multiplication. However feel free to checkout
 [the source code](https://gist.github.com/nhunzaker/79c599d367b168819c11)
-if you are curious
+if you are curious.
 
-After we pull in a color matrix transformation library, manipulating brightness and contrast is a matter of sending
-parameters into a color matrix:
+After we pull in a color matrix transformation library, manipulating
+brightness and contrast is a matter of sending the right parameters:
 
 ```html
-<script src="color-matrix.js"></script>
+<!-- https://github.com/vigetlabs/canvas-instagram-filters/blob/gh-pages/lib/color-matrix.js -->
+<script src="lib/color-matrix.js"></script>
 
 <script>
   //... prior code
@@ -243,7 +243,7 @@ parameters into a color matrix:
 ```
 
 The specific brightness and contrast parameters are different, however
-the effect is virtually the same. Beautiful:
+the result is virtually the same. Beautiful:
 
 <iframe src="http://codepen.io/nhunzaker/full/oxxaXO/" width="100%"
 height="390" frameborder="0"></iframe>
