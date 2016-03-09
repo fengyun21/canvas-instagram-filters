@@ -309,7 +309,7 @@ an image, then render the scene once it has finished loading:</p>
 
   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span> (<span class="hljs-params"></span>) </span>{
     <span class="hljs-comment">// Scale so that the image fills the container</span>
-    <span class="hljs-keyword">var</span> width  = <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">700</span>, <span class="hljs-built_in">window</span>.innerWidth);
+    <span class="hljs-keyword">var</span> width  = <span class="hljs-built_in">window</span>.innerWidth;
     <span class="hljs-keyword">var</span> scale  = width / photo.naturalWidth;
     <span class="hljs-keyword">var</span> height = photo.naturalHeight * scale;;
 
@@ -478,4 +478,5 @@ closely:</p>
 <p>Implementing blend modes such as <code>screen</code>, <code>multiply</code> and <code>color-burn</code>
 are totally achievable; it just takes a little more work. The result
 is fantastic, beautiful photography within 2D context canvas.</p>
+<p><a href="demo.html">View the end result for yourself.</a></p>
 
