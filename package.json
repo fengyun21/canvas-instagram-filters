@@ -1,0 +1,14 @@
+{
+  "name": "instagram-filters",
+  "version": "1.0.0",
+  "description": "[Instagram](https://www.instagram.com/) made us all fall in love with image filters. A well-chosen filter can augment the best parts of a photo, or soften undesirable qualities.",
+  "main": "color-matrix.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nhunzaker-markdown": "1.0.0"
+  }
+}

@@ -1,0 +1,86 @@
+<style>
+  body {
+    margin: 0;
+  }
+</style>
+<canvas id="canvas"></canvas>
+<script src="lib/color-matrix.js"></script>
+
+<script>
+  var canvas = document.getElementById('canvas');
+  var ctx    = canvas.getContext('2d');
+  var photo  = new Image();
+
+  function blend (background, foreground, width, height, transform) {
+    var bottom = background.getImageData(0, 0, width, height);
+    var top    = foreground.getImageData(0, 0, width, height);
+
+    // The data is sorted as a big list of colors that look like:
+    // [red, green, blue, alpha, red, green, blue, alpha, ...]
+    // So every 4th element represents a new pixel
+    for (var i = 0, size = top.data.length; i < size; i+=4) {
+      // red
+      top.data[i+0] = transform(bottom.data[i+0], top.data[i+0]);
+      // green
+      top.data[i+1] = transform(bottom.data[i+1], top.data[i+1]);
+      // blue
+      top.data[i+2] = transform(bottom.data[i+2], top.data[i+2]);
+      // the fourth slot is alpha. We don't need that (so skip by 4)
+    }
+
+    return top
+  }
+
+  function toasterGradient (width, height) {
+    var texture = document.createElement('canvas');
+    var ctx = texture.getContext('2d');
+
+    texture.width = width;
+    texture.height = height;
+
+    // Fill a Radial Gradient
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/createRadialGradient
+    var gradient = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, width * 0.6);
+
+    gradient.addColorStop(0, "#804e0f");
+    gradient.addColorStop(1, "#3b003b");
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    return ctx
+  }
+
+  function render () {
+    // Scale so that the image fills the container
+    var width  = Math.max(700, window.innerWidth)
+    var scale  = width / photo.naturalWidth;
+    var height = photo.naturalHeight * scale
+
+    canvas.width  = width
+    canvas.height = height
+
+    var then   = performance.now()
+
+    ctx.drawImage(photo, 0, 0, width, height)
+
+    var gradient = toasterGradient(width, height);
+
+    var screen = blend(ctx, gradient, width, height, function (bottomPixel, topPixel) {
+      bottomPixel /= 255
+      topPixel    /= 255
+
+      return 255 * (1 - (1 - topPixel) * (1 - bottomPixel))
+    })
+
+    var colorCorrected = colorMatrix(screen, { contrast: 30, brightness: -30 })
+
+    ctx.putImageData(colorCorrected, 0, 0)
+
+    console.log('Rendered in %i milliseconds', (performance.now() - then))
+  }
+
+  photo.onload = render;
+  photo.crossOrigin = "Anonymous";
+  photo.src = "assets/graphic.jpg";
+</script>
