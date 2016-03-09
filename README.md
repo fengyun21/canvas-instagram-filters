@@ -117,8 +117,8 @@ purple-orange gradient covering our image.
 height="390" frameborder="0"></iframe>
 
 Not ideal. We need to blend the pixels in the gradient with the
-background. That means enumerating over the pixel data Canvas gives us
-a great way to do that with `context.getImageData`.
+background. That means enumerating over the pixel data. Canvas gives us
+a great way to do that: `context.getImageData`.
 
 ## context.getImageData
 
@@ -146,17 +146,20 @@ function blend (background, foreground, width, height, transform) {
 }
 ```
 
-Cool. Enumerate over ever pixel of the gradient (the foreground) and
+Cool. Enumerate over every pixel of the gradient (the foreground) and
 replace the pixel with the result of a given transformation function.
 
-So what do I mean by transformation function? I mean a blending mode
-transformation. This is not propriety knowledge, [Wikipedia contains a
-wealth of formulas for a number of blend modes](https://en.wikipedia.org/wiki/Blend_modes).
+So what do I mean by transformation function? I mean a function that
+implements one of the many blending modes. This is not propriety
+knowledge,
+[Wikipedia contains a vast array of formulas for most blending techniques](https://en.wikipedia.org/wiki/Blend_modes).
 
 ## Implementing the screen blend mode
 
 [According to CSSGram](https://github.com/una/CSSgram/blob/master/source/css/toaster.css#L32),
-we need the "screen" blend mode for Toaster. This formula is:
+we need the
+[`screen`](https://en.wikipedia.org/wiki/Blend_modes#Screen) blend
+mode for Toaster. This formula is:
 
 ```javascript
 // https://en.wikipedia.org/wiki/Blend_modes#Screen

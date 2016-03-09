@@ -366,8 +366,8 @@ purple-orange gradient covering our image.</p>
 height="390" frameborder="0"></iframe>
 
 <p>Not ideal. We need to blend the pixels in the gradient with the
-background. That means enumerating over the pixel data Canvas gives us
-a great way to do that with <code>context.getImageData</code>.</p>
+background. That means enumerating over the pixel data. Canvas gives us
+a great way to do that: <code>context.getImageData</code>.</p>
 <h2 id="context-getimagedata">context.getImageData</h2>
 <p><code>context.getImageData</code> grabs a box of pixels from the canvas and
 returns an <code>ImageData</code> object. <code>ImageData</code> provides <code>width</code>,
@@ -390,14 +390,17 @@ field:</p>
   <span class="hljs-keyword">return</span> top;
 }
 </code></pre>
-<p>Cool. Enumerate over ever pixel of the gradient (the foreground) and
+<p>Cool. Enumerate over every pixel of the gradient (the foreground) and
 replace the pixel with the result of a given transformation function.</p>
-<p>So what do I mean by transformation function? I mean a blending mode
-transformation. This is not propriety knowledge, <a href="https://en.wikipedia.org/wiki/Blend_modes">Wikipedia contains a
-wealth of formulas for a number of blend modes</a>.</p>
+<p>So what do I mean by transformation function? I mean a function that
+implements one of the many blending modes. This is not propriety
+knowledge,
+<a href="https://en.wikipedia.org/wiki/Blend_modes">Wikipedia contains a vast array of formulas for most blending techniques</a>.</p>
 <h2 id="implementing-the-screen-blend-mode">Implementing the screen blend mode</h2>
 <p><a href="https://github.com/una/CSSgram/blob/master/source/css/toaster.css#L32">According to CSSGram</a>,
-we need the “screen” blend mode for Toaster. This formula is:</p>
+we need the
+<a href="https://en.wikipedia.org/wiki/Blend_modes#Screen"><code>screen</code></a> blend
+mode for Toaster. This formula is:</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// https://en.wikipedia.org/wiki/Blend_modes#Screen</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">screen</span> (<span class="hljs-params">bottomPixel, topPixel</span>) </span>{
   <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> - (<span class="hljs-number">1</span> - bottomPixel) * (<span class="hljs-number">1</span> - topPixel);
