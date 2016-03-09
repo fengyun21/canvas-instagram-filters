@@ -1,4 +1,4 @@
-# Color Burn, Multiply, and other Blend Modes in HTML5 Canvas
+# Instagram-style filters in HTML5 Canvas
 
 [Instagram](https://www.instagram.com/) made us all fall in love with
 image filters. A well-chosen filter can augment the best parts of a
