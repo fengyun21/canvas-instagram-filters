@@ -12,17 +12,9 @@ include ./.env
 help:
 	@ echo
 	@ echo "  ${GREEN}start${RESET} – host a local web server."
-	@ echo "  ${GREEN}html${RESET}  – generate html for blog post."
 	@ echo
 
 start:
 	@ echo "${PLUS} running at $(SERVER_URL)"
 	@ echo "${INFO} press ctrl + c when finished"
 	@ python -m SimpleHTTPServer $(PORT) > /dev/null 2>&1
-
-html: $(patsubst %.md,%.html,$(wildcard lessons/**/README.md) README.md)
-
-%.html: %.md
-	@ echo "<meta charset='utf-8'>" > $(@D)/index.html
-	@ cat $^ | node ./node_modules/nhunzaker-markdown/index >> $(@D)/index.html
-	@ echo "${PLUS} $(@D)/index.html"

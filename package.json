@@ -1,8 +1,0 @@
-{
-  "name": "instagram-filters",
-  "private": true,
-  "author": "Nate Hunzaker",
-  "devDependencies": {
-    "nhunzaker-markdown": "1.1.1"
-  }
-}
