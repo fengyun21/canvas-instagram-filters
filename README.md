@@ -210,7 +210,7 @@ brightness using the CSS `filter` property](https://github.com/una/CSSgram/blob/
 
 Brightness and contrast are a little tricker, however the
 techniques are well established. The internet is a deep ocean of free
-information. Furtunately for us, [the HTML5 drawing
+information. Fortunately for us, [the HTML5 drawing
 library EaselJS has already solved this problem for us](http://www.createjs.com/docs/easeljs/files/easeljs_filters_ColorMatrixFilter.js.html#l41). Color
 matrices provide a way to manipulate the brightness, color, contrast,
 and saturation of an image.
