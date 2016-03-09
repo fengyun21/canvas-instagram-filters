@@ -74,8 +74,8 @@ it when the image finishes loading.
 
 <iframe src="http://codepen.io/nhunzaker/full/xVVjJj/" width="100%" height="390" frameborder="0"></iframe>
 
-This paints the image. However
-[Ina's implementation of Toaster](https://github.com/una/CSSgram/blob/master/source/scss/toaster.scss),
+This paints the image. However in
+[Una's implementation of Toaster](https://github.com/una/CSSgram/blob/master/source/scss/toaster.scss),
 there is a radial gradient on top.
 
 This is provided by the 2D canvas API:
