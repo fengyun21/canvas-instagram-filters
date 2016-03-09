@@ -53,14 +53,14 @@ an image, then render the scene once it has finished loading:
 
   function render () {
     // Scale so that the image fills the container
-    var width  = Math.max(700, window.innerWidth)
+    var width  = Math.max(700, window.innerWidth);
     var scale  = width / photo.naturalWidth;
-    var height = photo.naturalHeight * scale
+    var height = photo.naturalHeight * scale;;
 
-    canvas.width  = width
-    canvas.height = height
+    canvas.width  = width;
+    canvas.height = height;
 
-    ctx.drawImage(photo, 0, 0)
+    ctx.drawImage(photo, 0, 0);
   }
 
   photo.onload = render;
@@ -98,13 +98,13 @@ function toasterGradient (width, height) {
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
 
-  return ctx
+  return ctx;
 }
 
 function render () {
   // ... prior code
 
-  var gradient = toasterGradient(width, height)
+  var gradient = toasterGradient(width, height);
 
   ctx.drawImage(gradient.canvas, 0, 0);
 }
@@ -142,7 +142,7 @@ function blend (background, foreground, width, height, transform) {
     // the fourth slot is alpha. We don't need that (so skip by 4)
   }
 
-  return top
+  return top;
 }
 ```
 
@@ -161,7 +161,7 @@ we need the "screen" blend mode for Toaster. This formula is:
 ```javascript
 // https://en.wikipedia.org/wiki/Blend_modes#Screen
 function screen (bottomPixel, topPixel) {
-  return 1 - (1 - bottomPixel) * (1 - topPixel)
+  return 1 - (1 - bottomPixel) * (1 - topPixel);
 }
 ```
 
@@ -171,10 +171,10 @@ to make a minor tweak:
 ```javascript
 // https://en.wikipedia.org/wiki/Blend_modes#Screen
 function screen (a, b) {
-  bottomPixel /= 255
-  topPixel    /= 255
+  bottomPixel /= 255;
+  topPixel    /= 255;
 
-  return 255 * (1 - (1 - topPixel) * (1 - bottomPixel))
+  return 255 * (1 - (1 - topPixel) * (1 - bottomPixel));
 }
 ```
 
@@ -184,14 +184,14 @@ Finally, let's invoke the `blend` function with this transformation:
 function render() {
   // ...prior code
   var screen = blend(ctx, gradient, width, height, function (bottomPixel, topPixel) {
-    bottomPixel /= 255
-    topPixel    /= 255
+    bottomPixel /= 255;
+    topPixel    /= 255;
 
-    return 255 * (1 - (1 - topPixel) * (1 - bottomPixel))
+    return 255 * (1 - (1 - topPixel) * (1 - bottomPixel));
   })
 
   // replace `ctx.drawImage(gradient.canvas, 0, 0)` with this:
-  ctx.putImageData(screen, 0, 0)
+  ctx.putImageData(screen, 0, 0);
 }
 ```
 
@@ -231,10 +231,10 @@ parameters into a color matrix:
   //... prior code
   function render () {
     //...prior code
-    var colorCorrected = colorMatrix(screen, { contrast: 30, brightness: -30 })
+    var colorCorrected = colorMatrix(screen, { contrast: 30, brightness: -30 });
 
     // Replace `ctx.putImageData(screen, 0, 0)` with:
-    ctx.putImageData(colorCorrected, 0, 0)
+    ctx.putImageData(colorCorrected, 0, 0);
   }
 </script>
 ```
@@ -250,11 +250,10 @@ height="390" frameborder="0"></iframe>
 A quick diff from Photoshop also shows us that we hit the mark pretty
 closely:
 
-<div>
-  <img src="https://cloud.githubusercontent.com/assets/590904/13647908/41ef37c0-e604-11e5-8e1d-1f47ee77a70b.png" style="max-width: 100%; display: block;"/>
+<div style="margin-bottom: 24px; font-size: 12px;">
+  <img src="https://cloud.githubusercontent.com/assets/590904/13647908/41ef37c0-e604-11e5-8e1d-1f47ee77a70b.png" style="max-width: 100%; display: block; margin-bottom: 4px;"/>
+  Darker pixels means a closer match.
 </div>
-
-Darker pixels means a closer match.
 
 Implementing blend modes such as `screen`, `multiply` and `color-burn`
 are totally achievable; it just takes a little more work. The result

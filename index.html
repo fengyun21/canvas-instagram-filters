@@ -309,14 +309,14 @@ an image, then render the scene once it has finished loading:</p>
 
   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span> (<span class="hljs-params"></span>) </span>{
     <span class="hljs-comment">// Scale so that the image fills the container</span>
-    <span class="hljs-keyword">var</span> width  = <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">700</span>, <span class="hljs-built_in">window</span>.innerWidth)
+    <span class="hljs-keyword">var</span> width  = <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">700</span>, <span class="hljs-built_in">window</span>.innerWidth);
     <span class="hljs-keyword">var</span> scale  = width / photo.naturalWidth;
-    <span class="hljs-keyword">var</span> height = photo.naturalHeight * scale
+    <span class="hljs-keyword">var</span> height = photo.naturalHeight * scale;;
 
-    canvas.width  = width
-    canvas.height = height
+    canvas.width  = width;
+    canvas.height = height;
 
-    ctx.drawImage(photo, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    ctx.drawImage(photo, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
   }
 
   photo.onload = render;
@@ -349,13 +349,13 @@ there is a radial gradient on top.</p>
   ctx.fillStyle = gradient;
   ctx.fillRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, width, height);
 
-  <span class="hljs-keyword">return</span> ctx
+  <span class="hljs-keyword">return</span> ctx;
 }
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span> (<span class="hljs-params"></span>) </span>{
   <span class="hljs-comment">// ... prior code</span>
 
-  <span class="hljs-keyword">var</span> gradient = toasterGradient(width, height)
+  <span class="hljs-keyword">var</span> gradient = toasterGradient(width, height);
 
   ctx.drawImage(gradient.canvas, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
 }
@@ -387,7 +387,7 @@ field:</p>
     <span class="hljs-comment">// the fourth slot is alpha. We don't need that (so skip by 4)</span>
   }
 
-  <span class="hljs-keyword">return</span> top
+  <span class="hljs-keyword">return</span> top;
 }
 </code></pre>
 <p>Cool. Enumerate over ever pixel of the gradient (the foreground) and
@@ -400,31 +400,31 @@ wealth of formulas for a number of blend modes</a>.</p>
 we need the “screen” blend mode for Toaster. This formula is:</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// https://en.wikipedia.org/wiki/Blend_modes#Screen</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">screen</span> (<span class="hljs-params">bottomPixel, topPixel</span>) </span>{
-  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> - (<span class="hljs-number">1</span> - bottomPixel) * (<span class="hljs-number">1</span> - topPixel)
+  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> - (<span class="hljs-number">1</span> - bottomPixel) * (<span class="hljs-number">1</span> - topPixel);
 }
 </code></pre>
 <p>Since <code>getImageData</code> returns color values between 0 and 255, we need
 to make a minor tweak:</p>
 <pre><code class="lang-javascript"><span class="hljs-comment">// https://en.wikipedia.org/wiki/Blend_modes#Screen</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">screen</span> (<span class="hljs-params">a, b</span>) </span>{
-  bottomPixel /= <span class="hljs-number">255</span>
-  topPixel    /= <span class="hljs-number">255</span>
+  bottomPixel /= <span class="hljs-number">255</span>;
+  topPixel    /= <span class="hljs-number">255</span>;
 
-  <span class="hljs-keyword">return</span> <span class="hljs-number">255</span> * (<span class="hljs-number">1</span> - (<span class="hljs-number">1</span> - topPixel) * (<span class="hljs-number">1</span> - bottomPixel))
+  <span class="hljs-keyword">return</span> <span class="hljs-number">255</span> * (<span class="hljs-number">1</span> - (<span class="hljs-number">1</span> - topPixel) * (<span class="hljs-number">1</span> - bottomPixel));
 }
 </code></pre>
 <p>Finally, let’s invoke the <code>blend</code> function with this transformation:</p>
 <pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-comment">// ...prior code</span>
   <span class="hljs-keyword">var</span> screen = blend(ctx, gradient, width, height, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">bottomPixel, topPixel</span>) </span>{
-    bottomPixel /= <span class="hljs-number">255</span>
-    topPixel    /= <span class="hljs-number">255</span>
+    bottomPixel /= <span class="hljs-number">255</span>;
+    topPixel    /= <span class="hljs-number">255</span>;
 
-    <span class="hljs-keyword">return</span> <span class="hljs-number">255</span> * (<span class="hljs-number">1</span> - (<span class="hljs-number">1</span> - topPixel) * (<span class="hljs-number">1</span> - bottomPixel))
+    <span class="hljs-keyword">return</span> <span class="hljs-number">255</span> * (<span class="hljs-number">1</span> - (<span class="hljs-number">1</span> - topPixel) * (<span class="hljs-number">1</span> - bottomPixel));
   })
 
   <span class="hljs-comment">// replace `ctx.drawImage(gradient.canvas, 0, 0)` with this:</span>
-  ctx.putImageData(screen, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+  ctx.putImageData(screen, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
 }
 </code></pre>
 <p>Nice! This performs the blending we want.</p>
@@ -455,10 +455,10 @@ parameters into a color matrix:</p>
   <span class="hljs-comment">//... prior code</span>
   <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span> <span class="hljs-params">()</span> </span>{
     <span class="hljs-comment">//...prior code</span>
-    <span class="hljs-keyword">var</span> colorCorrected = colorMatrix(screen, { contrast: <span class="hljs-number">30</span>, brightness: <span class="hljs-number">-30</span> })
+    <span class="hljs-keyword">var</span> colorCorrected = colorMatrix(screen, { contrast: <span class="hljs-number">30</span>, brightness: <span class="hljs-number">-30</span> });
 
     <span class="hljs-comment">// Replace `ctx.putImageData(screen, 0, 0)` with:</span>
-    ctx.putImageData(colorCorrected, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
+    ctx.putImageData(colorCorrected, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
   }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
@@ -470,11 +470,11 @@ height="390" frameborder="0"></iframe>
 <h2 id="we-made-it">We made it</h2>
 <p>A quick diff from Photoshop also shows us that we hit the mark pretty
 closely:</p>
-<div>
-  <img src="https://cloud.githubusercontent.com/assets/590904/13647908/41ef37c0-e604-11e5-8e1d-1f47ee77a70b.png" style="max-width: 100%; display: block;"/>
+<div style="margin-bottom: 24px; font-size: 12px;">
+  <img src="https://cloud.githubusercontent.com/assets/590904/13647908/41ef37c0-e604-11e5-8e1d-1f47ee77a70b.png" style="max-width: 100%; display: block; margin-bottom: 4px;"/>
+  Darker pixels means a closer match.
 </div>
 
-<p>Darker pixels means a closer match.</p>
 <p>Implementing blend modes such as <code>screen</code>, <code>multiply</code> and <code>color-burn</code>
 are totally achievable; it just takes a little more work. The result
 is fantastic, beautiful photography within 2D context canvas.</p>
