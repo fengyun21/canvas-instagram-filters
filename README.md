@@ -53,7 +53,7 @@ an image, then render the scene once it has finished loading:
 
   function render () {
     // Scale so that the image fills the container
-    var width  = Math.max(700, window.innerWidth);
+    var width  = window.innerWidth;
     var scale  = width / photo.naturalWidth;
     var height = photo.naturalHeight * scale;;
 
