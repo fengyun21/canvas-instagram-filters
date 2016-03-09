@@ -308,7 +308,7 @@ an image, then render the scene once it has finished loading:</p>
     canvas.width  = width
     canvas.height = height
 
-    ctx.drawImage(photo)
+    ctx.drawImage(photo, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
   }
 
   photo.onload = render;
@@ -318,6 +318,8 @@ an image, then render the scene once it has finished loading:</p>
 </code></pre>
 <p>Essentially, create a <code>render</code> function that draws an image, then call
 it when the image finishes loading.</p>
+<iframe src="http://codepen.io/nhunzaker/full/xVVjJj/" width="100%" height="390" frameborder="0"></iframe>
+
 <p>This paints the image. However
 <a href="https://github.com/una/CSSgram/blob/master/source/scss/toaster.scss">Ina’s implementation of Toaster</a>,
 there is a radial gradient on top.</p>
@@ -351,10 +353,13 @@ there is a radial gradient on top.</p>
 }
 </code></pre>
 <p>We’re getting there. However this leaves us with an opaque
-purple-orange gradient covering our image. Not ideal.</p>
-<p>We need to blend the pixels in the gradient with the background. That
-means enumerating over the pixel data Canvas gives us a great way to
-do that with <code>context.getImageData</code>.</p>
+purple-orange gradient covering our image.</p>
+<iframe src="http://codepen.io/nhunzaker/full/vGGVYo/" width="100%"
+height="390" frameborder="0"></iframe>
+
+<p>Not ideal. We need to blend the pixels in the gradient with the
+background. That means enumerating over the pixel data Canvas gives us
+a great way to do that with <code>context.getImageData</code>.</p>
 <h2 id="context-getimagedata">context.getImageData</h2>
 <p><code>context.getImageData</code> grabs a box of pixels from the canvas and
 returns an <code>ImageData</code> object. <code>ImageData</code> provides <code>width</code>,
@@ -364,7 +369,7 @@ field:</p>
   <span class="hljs-keyword">var</span> bottom = background.getImageData(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, width, height);
   <span class="hljs-keyword">var</span> top    = foreground.getImageData(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, width, height);
 
-  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, size = top.data.length; i += <span class="hljs-number">4</span>) {
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, size = top.data.length; i &lt; size; i += <span class="hljs-number">4</span>) {
     <span class="hljs-comment">// red</span>
     top.data[i+<span class="hljs-number">0</span>] = transform(bottom.data[i+<span class="hljs-number">0</span>], top.data[i+<span class="hljs-number">0</span>]);
     <span class="hljs-comment">// green</span>
@@ -403,17 +408,21 @@ to make a minor tweak:</p>
 <p>Finally, let’s invoke the <code>blend</code> function with this transformation:</p>
 <pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-comment">// ...prior code</span>
-  <span class="hljs-keyword">var</span> screen blend(ctx, gradient, width, height, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">bottomPixel, topPixel</span>) </span>{
+  <span class="hljs-keyword">var</span> screen = blend(ctx, gradient, width, height, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">bottomPixel, topPixel</span>) </span>{
     bottomPixel /= <span class="hljs-number">255</span>
     topPixel    /= <span class="hljs-number">255</span>
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">255</span> * (<span class="hljs-number">1</span> - (<span class="hljs-number">1</span> - topPixel) * (<span class="hljs-number">1</span> - bottomPixel))
   })
 
+  <span class="hljs-comment">// replace `ctx.drawImage(gradient.canvas, 0, 0)` with this:</span>
   ctx.putImageData(screen, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
 }
 </code></pre>
 <p>Nice! This performs the blending we want.</p>
+<iframe src="http://codepen.io/nhunzaker/full/jqqeEm/" width="100%"
+height="390" frameborder="0"></iframe>
+
 <h2 id="why-is-it-so-washed-out-">Why is it so washed out?</h2>
 <p>We’ve neglected an important component: <a href="https://github.com/una/CSSgram/blob/master/source/scss/toaster.scss#L11">Toaster manipulates contrast and
 brightness using the CSS <code>filter</code> property</a>.</p>
@@ -435,13 +444,24 @@ parameters into a color matrix:</p>
     <span class="hljs-comment">//...prior code</span>
     <span class="hljs-keyword">var</span> colorCorrected = colorMatrix(screen, { contrast: <span class="hljs-number">30</span>, brightness: <span class="hljs-number">-30</span> })
 
+    <span class="hljs-comment">// Replace `ctx.putImageData(screen, 0, 0)` with:</span>
     ctx.putImageData(colorCorrected, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
   }
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
 <p>The specific brightness and contrast parameters are different, however
-the effect is virtually the same.</p>
+the effect is virtually the same. Beautiful:</p>
+<iframe src="http://codepen.io/nhunzaker/full/oxxaXO/" width="100%"
+height="390" frameborder="0"></iframe>
+
 <h2 id="we-made-it">We made it</h2>
+<p>A quick diff from Photoshop also shows us that we hit the mark pretty
+closely:</p>
+<div>
+  <img src="https://cloud.githubusercontent.com/assets/590904/13647908/41ef37c0-e604-11e5-8e1d-1f47ee77a70b.png" style="max-width: 100%; display: block;"/>
+</div>
+
+<p>Darker pixels means a closer match.</p>
 <p>Implementing blend modes such as <code>screen</code>, <code>multiply</code> and <code>color-burn</code>
 are totally achievable; it just takes a little more work. The result
 is fantastic, beautiful photography within 2D context canvas.</p>

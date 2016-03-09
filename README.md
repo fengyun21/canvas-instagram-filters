@@ -58,7 +58,7 @@ an image, then render the scene once it has finished loading:
     canvas.width  = width
     canvas.height = height
 
-    ctx.drawImage(photo)
+    ctx.drawImage(photo, 0, 0)
   }
 
   photo.onload = render;
@@ -69,6 +69,8 @@ an image, then render the scene once it has finished loading:
 
 Essentially, create a `render` function that draws an image, then call
 it when the image finishes loading.
+
+<iframe src="http://codepen.io/nhunzaker/full/xVVjJj/" width="100%" height="390" frameborder="0"></iframe>
 
 This paints the image. However
 [Ina's implementation of Toaster](https://github.com/una/CSSgram/blob/master/source/scss/toaster.scss),
@@ -107,11 +109,14 @@ function render () {
 ```
 
 We're getting there. However this leaves us with an opaque
-purple-orange gradient covering our image. Not ideal.
+purple-orange gradient covering our image.
 
-We need to blend the pixels in the gradient with the background. That
-means enumerating over the pixel data Canvas gives us a great way to
-do that with `context.getImageData`.
+<iframe src="http://codepen.io/nhunzaker/full/vGGVYo/" width="100%"
+height="390" frameborder="0"></iframe>
+
+Not ideal. We need to blend the pixels in the gradient with the
+background. That means enumerating over the pixel data Canvas gives us
+a great way to do that with `context.getImageData`.
 
 ## context.getImageData
 
@@ -125,7 +130,7 @@ function blend (background, foreground, width, height, transform) {
   var bottom = background.getImageData(0, 0, width, height);
   var top    = foreground.getImageData(0, 0, width, height);
 
-  for (var i = 0, size = top.data.length; i += 4) {
+  for (var i = 0, size = top.data.length; i < size; i += 4) {
     // red
     top.data[i+0] = transform(bottom.data[i+0], top.data[i+0]);
     // green
@@ -176,18 +181,22 @@ Finally, let's invoke the `blend` function with this transformation:
 ```javascript
 function render() {
   // ...prior code
-  var screen blend(ctx, gradient, width, height, function (bottomPixel, topPixel) {
+  var screen = blend(ctx, gradient, width, height, function (bottomPixel, topPixel) {
     bottomPixel /= 255
     topPixel    /= 255
 
     return 255 * (1 - (1 - topPixel) * (1 - bottomPixel))
   })
 
+  // replace `ctx.drawImage(gradient.canvas, 0, 0)` with this:
   ctx.putImageData(screen, 0, 0)
 }
 ```
 
 Nice! This performs the blending we want.
+
+<iframe src="http://codepen.io/nhunzaker/full/jqqeEm/" width="100%"
+height="390" frameborder="0"></iframe>
 
 ## Why is it so washed out?
 
@@ -216,15 +225,28 @@ parameters into a color matrix:
     //...prior code
     var colorCorrected = colorMatrix(screen, { contrast: 30, brightness: -30 })
 
+    // Replace `ctx.putImageData(screen, 0, 0)` with:
     ctx.putImageData(colorCorrected, 0, 0)
   }
 </script>
 ```
 
 The specific brightness and contrast parameters are different, however
-the effect is virtually the same.
+the effect is virtually the same. Beautiful:
+
+<iframe src="http://codepen.io/nhunzaker/full/oxxaXO/" width="100%"
+height="390" frameborder="0"></iframe>
 
 ## We made it
+
+A quick diff from Photoshop also shows us that we hit the mark pretty
+closely:
+
+<div>
+  <img src="https://cloud.githubusercontent.com/assets/590904/13647908/41ef37c0-e604-11e5-8e1d-1f47ee77a70b.png" style="max-width: 100%; display: block;"/>
+</div>
+
+Darker pixels means a closer match.
 
 Implementing blend modes such as `screen`, `multiply` and `color-burn`
 are totally achievable; it just takes a little more work. The result
