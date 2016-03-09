@@ -259,7 +259,7 @@ closely:
 </div>
 
 Implementing blend modes such as `screen`, `multiply` and `color-burn`
-are totally achievable; it just takes a little more work. The result
+is a realistic goal; it just takes a little more work. The result
 is fantastic, beautiful photography within 2D context canvas.
 
 [View the end result for yourself.](demo.html)
