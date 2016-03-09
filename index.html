@@ -1,5 +1,4 @@
 <meta charset='utf-8'>
-
 <style>body {
   box-shadow: inset 0 3px 0 0 #242331;
   color: #333;
@@ -26,11 +25,20 @@
 /*   pointer-events: none; */
 /* } */
 
-p, div, section, main, ul, ol, dl, h1, h2, h3, h4, h5, h6, pre code, blockquote/* body:before { */
-/*   position: absolute; */
-/*   content: ""; */
-/*   background-size: 4px 4px; */
-/*   background-image: linear-gradient(0deg, transparent, red 1px, transparent 1px, transparent 4px), linear-gradient(90deg, transparent, red 1px, tpx;
+p, div, section, main, ul, ol, dl, h1, h2, h3, h4, h5, h6, pre code, blockquote, iframe {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 510px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+iframe {
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  margin: 16px auto 32px;
 }
 
 h1, h2, h3 {
@@ -428,11 +436,16 @@ brightness using the CSS <code>filter</code> property</a>.</p>
 <p>Brightness and contrast are a little tricker, however the
 techniques are well established. The internet is a deep ocean of free
 information. Furtunately for us, <a href="http://www.createjs.com/docs/easeljs/files/easeljs_filters_ColorMatrixFilter.js.html#l41">the HTML5 drawing
-library EaselJS has already solved this problem for us</a>.</p>
+library EaselJS has already solved this problem for us</a>. Color
+matrices provide a way to manipulate the brightness, color, contrast,
+and saturation of an image.</p>
+<h2 id="using-color-matrices">Using Color Matrices</h2>
 <p>For the sake of keeping focused, I’ve extracted the color matrix
 algorithm from EaselJS for the purposes of this blog post, I won’t
 make you wade through matrix multiplication. However feel free to
-checkout <a href="https://gist.github.com/nhunzaker/79c599d367b168819c11">the source code</a> if you are curious</p>
+checkout
+<a href="https://gist.github.com/nhunzaker/79c599d367b168819c11">the source code</a>
+if you are curious</p>
 <p>After we pull in a color matrix transformation library, manipulating brightness and contrast is a matter of sending
 parameters into a color matrix:</p>
 <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"color-matrix.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
@@ -464,3 +477,4 @@ closely:</p>
 <p>Implementing blend modes such as <code>screen</code>, <code>multiply</code> and <code>color-burn</code>
 are totally achievable; it just takes a little more work. The result
 is fantastic, beautiful photography within 2D context canvas.</p>
+

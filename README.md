@@ -206,12 +206,18 @@ brightness using the CSS `filter` property](https://github.com/una/CSSgram/blob/
 Brightness and contrast are a little tricker, however the
 techniques are well established. The internet is a deep ocean of free
 information. Furtunately for us, [the HTML5 drawing
-library EaselJS has already solved this problem for us](http://www.createjs.com/docs/easeljs/files/easeljs_filters_ColorMatrixFilter.js.html#l41).
+library EaselJS has already solved this problem for us](http://www.createjs.com/docs/easeljs/files/easeljs_filters_ColorMatrixFilter.js.html#l41). Color
+matrices provide a way to manipulate the brightness, color, contrast,
+and saturation of an image.
+
+## Using Color Matrices
 
 For the sake of keeping focused, I've extracted the color matrix
 algorithm from EaselJS for the purposes of this blog post, I won't
 make you wade through matrix multiplication. However feel free to
-checkout [the source code](https://gist.github.com/nhunzaker/79c599d367b168819c11) if you are curious
+checkout
+[the source code](https://gist.github.com/nhunzaker/79c599d367b168819c11)
+if you are curious
 
 After we pull in a color matrix transformation library, manipulating brightness and contrast is a matter of sending
 parameters into a color matrix:
