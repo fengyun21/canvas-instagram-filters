@@ -12,12 +12,15 @@
   var photo  = new Image();
 
   function blend (background, foreground, width, height, transform) {
+    console.time('Get pixel data')
     var bottom = background.getImageData(0, 0, width, height);
     var top    = foreground.getImageData(0, 0, width, height);
+    console.timeEnd('Get pixel data')
 
     // The data is sorted as a big list of colors that look like:
     // [red, green, blue, alpha, red, green, blue, alpha, ...]
     // So every 4th element represents a new pixel
+    console.time('Apply screen')
     for (var i = 0, size = top.data.length; i < size; i+=4) {
       // red
       top.data[i+0] = transform(bottom.data[i+0], top.data[i+0]);
@@ -27,6 +30,7 @@
       top.data[i+2] = transform(bottom.data[i+2], top.data[i+2]);
       // the fourth slot is alpha. We don't need that (so skip by 4)
     }
+    console.timeEnd('Apply screen')
 
     return top
   }
@@ -70,11 +74,9 @@
     var gradient = toasterGradient(width, height);
     console.timeEnd('Paint gradient')
 
-    console.time('Apply screen')
     var screen = blend(ctx, gradient, width, height, function (bottomPixel, topPixel) {
       return 255 - (255 - topPixel) * (255 - bottomPixel) / 255;
     })
-    console.timeEnd('Apply screen')
 
     console.time('Apply color correction')
     var colorCorrected = colorMatrix(screen, { contrast: 30, brightness: -30 })
